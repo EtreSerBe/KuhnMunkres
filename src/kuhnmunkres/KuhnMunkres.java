@@ -45,22 +45,19 @@ class KuhnMunkres
     public void init()
     {
 
-
-         int [][]m_matrix = {
-        {1,2,7,3,0},
-        {3,4,1,0,2},
-        {2,3,6,0,0},
-        {0,6,1,1,0},
-        {2,0,0,4,5}
+		        int [][]m_matrix = {
+        {250,400,350},
+        {400,600,350},
+        {200,400,250}
         };
         
         int [][]m_Auxiliarmatrix = {
-         {1,2,7,3,0},
-        {3,4,1,0,2},
-        {2,3,6,0,0},
-        {0,6,1,1,0},
-        {2,0,0,4,5}
+       {250,400,350},
+        {400,600,350},
+        {200,400,250}
         };
+	
+		
 
 
         this.originalG = new Matrix(m_matrix);
@@ -84,12 +81,15 @@ class KuhnMunkres
             switch(globalPosition)
             {
                 case 1:
+                    System.out.println("*********** PASO 1 ******");
                     mainAlgorithm1_1();
                 break;
                 case 2:
+                    System.out.println("*********** PASO 2 ******");
                     mainAlgorithm1_2();
                 break;
                 case 3:
+                    System.out.println("*********** PASO 3 ******");
                     mainAlgorithm1_3();
                 break;
             }
@@ -266,6 +266,8 @@ class KuhnMunkres
 	
 	private boolean SearchAugmentingPath( int in_UnsaturedY )
 	{
+            
+            System.out.println("*********** Enter  SearchAugmentingPath ******");
 		//This 'y' vertex is unsaturated. Search a way from here to the Unsaturated 'X' vertex.
             m_iAugmentingPathX.clear();
             m_iAugmentingPathY.clear();
@@ -315,7 +317,8 @@ class KuhnMunkres
                         {
                              m_iAugmentingPathX.pop(); //This is completely disposable.
                              x_pop = m_iAugmentingPathY.pop(); //This x value should be used to continue the iteration of the y below on the stack. 
-                            continue;
+                            x_pop++;
+                             continue;
                         }
                     }
                     else
@@ -323,6 +326,7 @@ class KuhnMunkres
                         if(!SearchRows(m_iAugmentingPathY.peek()))
                         {
                             x_pop = m_iAugmentingPathY.pop();
+                            x_pop++;
                         }
                         bPartingFromY = true;
                     }
