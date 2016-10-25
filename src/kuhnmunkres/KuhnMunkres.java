@@ -518,7 +518,7 @@ class KuhnMunkres
             {
                 for(int y = 0; y < originalG.get_m_WeightMatrix().length; y++)
                     labelingG.get_m_WeightMatrix()[x][y] = 
-                        (originalG.get_m_WeightMatrix()[x][y] >= m_RowsLabeling[x]? originalG.get_m_WeightMatrix()[x][y] : 0);
+                        (originalG.get_m_WeightMatrix()[x][y] >= m_RowsLabeling[x] + m_ColumnsLabeling[y]? originalG.get_m_WeightMatrix()[x][y] : 0);
             } 
         }
 
