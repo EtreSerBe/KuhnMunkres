@@ -20,14 +20,14 @@ class KuhnMunkres {
     Matrix labelingG;//solo los mayores al labeling actual
 
     Labeling mLabeling;
-    Set<Integer> m_i_S = new HashSet<Integer>();
-    Set<Integer> m_i_T = new HashSet<Integer>();
+    Set<Integer> m_i_S = new HashSet<Integer>();// x in clonfict
+    Set<Integer> m_i_T = new HashSet<Integer>();// y in conflict
     Set<Integer> m_i_S_Neighbors = new HashSet<Integer>();
 
     Stack<Integer> m_iAugmentingPathX = new Stack<Integer>();
     Stack<Integer> m_iAugmentingPathY = new Stack<Integer>();
 
-    ArrayList<Integer> mArrayList = new ArrayList<Integer>();
+    ArrayList<Integer> mActualMatching = new ArrayList<Integer>(); // camino
 
     int globalPosition = 1;
 
@@ -92,14 +92,14 @@ class KuhnMunkres {
             m_i_S.clear();
             m_i_T.clear();
             m_i_S_Neighbors.clear();
-            m_i_S.add(mArrayList.indexOf(-1));
+            m_i_S.add(mActualMatching.indexOf(-1));
             //get_Neighbors();
             globalPosition = 2;
         } else {
             System.out.println("Matching perfecto encontrado");
 
-            for (int i = 0; i < mArrayList.size(); i++) {
-                System.out.println("Vertex X= " + i + "Matches Y= " + mArrayList.get(i));
+            for (int i = 0; i < mActualMatching.size(); i++) {
+                System.out.println("Vertex X= " + i + "Matches Y= " + mActualMatching.get(i));
             }
             globalPosition = 4;
         }
@@ -123,10 +123,10 @@ class KuhnMunkres {
             if (m_i_T.contains(y)) {
                 continue;
             } else {
-                if (mArrayList.contains(y))//Saturated
+                if (mActualMatching.contains(y))//Saturated
                 {
-                    System.out.println("mArrayList.indexOf(y)" + mArrayList.indexOf(y));
-                    m_i_S.add(mArrayList.indexOf(y));
+                    System.out.println("mArrayList.indexOf(y)" + mActualMatching.indexOf(y));
+                    m_i_S.add(mActualMatching.indexOf(y));
                     m_i_T.add(y);
                     //Then, you should go to step 2 of the algorithm again.
                     globalPosition = 2;
@@ -155,11 +155,11 @@ class KuhnMunkres {
 
         for (int i = 0; i < mAumenting.length; i++) {
             if (mAumenting[i] > -1) {
-                int var = mArrayList.indexOf(mAumenting[i]);
+                int var = mActualMatching.indexOf(mAumenting[i]);
                 if (var != -1) {
-                    mArrayList.set(var, mAumenting[var]);
+                    mActualMatching.set(var, mAumenting[var]);
                 } else {
-                    mArrayList.set(i, mAumenting[i]);
+                    mActualMatching.set(i, mAumenting[i]);
                 }
             }
 
@@ -178,7 +178,7 @@ class KuhnMunkres {
                 //If that vertex is not already on the path we are making
                 if (!(m_iAugmentingPathY.search(x) > 0)) {
                     //If this X vertex is not saturated, we win, this is an augmenting path.
-                    if (mArrayList.get(x) == -1) {
+                    if (mActualMatching.get(x) == -1) {
                         //If we get here, it means we have our augmenting path.
                         m_iAugmentingPathY.push(x);
                         return 2;
@@ -206,14 +206,13 @@ class KuhnMunkres {
     private boolean SearchRows(int x) {
         System.out.println("Search rows using X = " + x);
         //If that vertex is not already on the path we are making
-        if (!(m_iAugmentingPathX.search(mArrayList.get(x)) > 0)) {
+        if (!(m_iAugmentingPathX.search(mActualMatching.get(x)) > 0)) {
 
             //If it is already contained in the matching in that position, then that (x,y)-edge is saturated.
             //Then, we add it to the path and try to go deeper into the tree.
-            m_iAugmentingPathX.push(
-                    mArrayList.get(x));
+            m_iAugmentingPathX.push(mActualMatching.get(x));
 
-            System.out.println("Going through: X = " + x + " and Y = " + mArrayList.get(x));
+            System.out.println("Going through: X = " + x + " and Y = " + mActualMatching.get(x));
 
             return true;
         }
@@ -279,7 +278,7 @@ class KuhnMunkres {
 
     public void Is_X_Saturated_Feo() {
         //I'm trying to make it start with just one saturated edge., not any more.
-        mArrayList
+        mActualMatching
                 = new ArrayList<Integer>();
 
         boolean bHasAssigned = false;
@@ -297,11 +296,11 @@ class KuhnMunkres {
         }
 
         for (int i = 0; i < labelingG.get_m_WeightMatrix().length; i++) {
-            if (mArrayList.size() == iHighestX) {
-                mArrayList.add(iHighestY);
+            if (mActualMatching.size() == iHighestX) {
+                mActualMatching.add(iHighestY);
                 continue;
             }
-            mArrayList.add(-1);
+            mActualMatching.add(-1);
         }
 
         System.out.println("Calling Is_X_Saturated_Feo");
@@ -344,7 +343,7 @@ class KuhnMunkres {
         }
 
         if (matching_stack_great.size() == originalG.get_m_WeightMatrix().length) {
-            for (int i = 0; i < mArrayList.size(); i++) {
+            for (int i = 0; i < mActualMatching.size(); i++) {
                 System.out.println("Vertex X= " + i + "Matches Y= " + matching_stack_great.get(i));
             }
             return true;
@@ -354,8 +353,7 @@ class KuhnMunkres {
     }
 
     public boolean Is_X_Saturated_Simple() {
-
-        return !mArrayList.contains(-1);
+        return !mActualMatching.contains(-1);
     }
 
     //Function to check if the algorithm should go to step 2 or step 3, depending of the Sets S and T.
