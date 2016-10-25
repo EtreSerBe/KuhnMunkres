@@ -98,7 +98,7 @@ class KuhnMunkres
 
     private void mainAlgorithm1_1()
     {
-        if(!Is_X_Saturated())
+        if(!Is_X_Saturated_Simple())
         {
             //Is_X_Saturated_Feo(); //Added so it creates a first try of a perfect matching.
             m_i_S.clear();
@@ -111,7 +111,11 @@ class KuhnMunkres
         else
         {
             System.out.println("Matching perfecto encontrado");
-
+            
+            for( int i = 0; i < mArrayList.size(); i++ )
+            {
+                System.out.println("Vertex X= " + i + "Matches Y= " + mArrayList.get(i) );
+            }
             globalPosition = 4;
         }    
     }
@@ -335,34 +339,37 @@ class KuhnMunkres
 
     public void Is_X_Saturated_Feo()
     {
-        
         //I'm trying to make it start with just one saturated edge., not any more.
         mArrayList = 
             new ArrayList<Integer>();
         
         boolean bHasAssigned = false;
+        int iHighestValue = -100000;
+        int iHighestY = -1;
+        int iHighestX = -1;
         for(int x = 0; x < labelingG.get_m_WeightMatrix().length; x++)
-        {
-            
-            boolean bFillWithMinus = true;
+        {            
             for(int y = 0; y < labelingG.get_m_WeightMatrix().length && bHasAssigned == false; y++)
             {
-                if(labelingG.get_m_WeightMatrix()[x][y] != 0)
+                if(labelingG.get_m_WeightMatrix()[x][y] != 0  && labelingG.get_m_WeightMatrix()[x][y] > iHighestValue )
                 {
-                    if( !mArrayList.contains(y) )
-                    {
-                        mArrayList.add(y);
-                        bHasAssigned = true;
-                        bFillWithMinus = false;
-                        break;
-                    }
+                    iHighestValue = labelingG.get_m_WeightMatrix()[x][y];
+                    iHighestY = y;
+                    iHighestX = x;
                 }
             }
-            if( bFillWithMinus == true  )
-            {
-                mArrayList.add(-1);
-            }
         }			
+        
+        for(int i = 0; i < labelingG.get_m_WeightMatrix().length; i++ )
+        {
+            if(mArrayList.size() == iHighestX)
+            {
+                mArrayList.add(iHighestY);
+                continue;
+            }
+            mArrayList.add(-1);
+        }
+        
 		System.out.println("Calling Is_X_Saturated_Feo");	
     }
 
@@ -420,6 +427,14 @@ class KuhnMunkres
         return false;     
     }
 
+    
+    
+    public boolean Is_X_Saturated_Simple()
+    {
+
+        return !mArrayList.contains(-1);
+    }
+    
 	//Function to check if the algorithm should go to step 2 or step 3, depending of the Sets S and T.
 	boolean Is_T_ASubsetOfNeighbors()
 	{
