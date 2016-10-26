@@ -30,9 +30,9 @@ public class KuhnMunkres {
 
         mGlobalVariables = new GlobalVariables();
         int[][] m_matrix = {
-            {250, 400, 350},
-            {400, 600, 350},
-            {200, 400, 250}
+            {10, 20, 15},
+            {0,0,1},
+            {2, 25, 10}
         };
 
         mGlobalVariables.setOriginalG(new Matrix(m_matrix));
@@ -150,10 +150,12 @@ public class KuhnMunkres {
 
         for (int x = 0; x < mGlobalVariables.getLabelingG().get_m_WeightMatrix().length; x++) {
             for (int y = 0; y < mGlobalVariables.getLabelingG().get_m_WeightMatrix().length && bHasAssigned == false; y++) {
-                if (mGlobalVariables.getLabelingG().get_m_WeightMatrix()[x][y] != 0 && mGlobalVariables.getLabelingG().get_m_WeightMatrix()[x][y] > iHighestValue) {
+                if (mGlobalVariables.getLabelingG().get_m_WeightMatrix()[x][y] != 0 ) {
                     iHighestValue = mGlobalVariables.getLabelingG().get_m_WeightMatrix()[x][y];
                     iHighestY = y;
                     iHighestX = x;
+                    x=1000;
+                    break;
                 }
             }
         }
@@ -191,7 +193,7 @@ public class KuhnMunkres {
 
     private int SearchColumns(int y, int start_x) {
         System.out.println(" Searching Columns from Y = " + y);
-        start_x += (start_x != 0 ? 1 : 0);
+       // start_x += (start_x != 0 ? 1 : 0);
         System.out.println(" Starting from X = " + start_x);
         for (int x = 0 + start_x; x < mGlobalVariables.getLabelingG().get_m_WeightMatrix().length; x++) {
             if (mGlobalVariables.getLabelingG().get_m_WeightMatrix()[x][y /*This 'y' should be the one being searched now.*/] != 0) {

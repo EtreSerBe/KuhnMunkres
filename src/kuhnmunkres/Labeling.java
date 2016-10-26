@@ -26,7 +26,7 @@ class Labeling {
         for (int x : m_i_S)//Changed to a Foreach
         {
             for (int y = 0; y < originalG.get_m_WeightMatrix().length; y++) {
-                if (m_i_T.contains(y)) {
+                if (m_i_T.contains(y) || originalG.get_m_WeightMatrix()[x][y] ==0 ) {
                     continue;
                 } else {
                     int iTemp = m_RowsLabeling[x] + m_ColumnsLabeling[y] - originalG.get_m_WeightMatrix()[x][y]; //This was WRONG XD
@@ -50,6 +50,7 @@ class Labeling {
         for (int s : m_i_S) {
             System.out.println("Update labeling S " + s);
             m_RowsLabeling[s] -= m_alpha;
+            //m_RowsLabeling[s] = m_RowsLabeling[s] < 0? 0: m_RowsLabeling[s] ;
         }
 
         for (int t : m_i_T) {
