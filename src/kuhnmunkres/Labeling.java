@@ -76,8 +76,8 @@ class Labeling {
             for (int y = 0; y < in_MatrixToLabel.getSize(); y++) {
                 iActualMaxX = GetMax(iActualMaxX, in_MatrixToLabel.m_WeightMatrix[x][y]);
             }
-            m_RowsLabeling[x] = iActualMaxX; //Stores it at the position of the X row.
-            m_ColumnsLabeling[x] = 0;//Initially, all the labels for columns (Y) are at 0's.
+            m_RowsLabeling[x] = iActualMaxX ;//> 0? iActualMaxX: 1; //Stores it at the position of the X row.
+            m_ColumnsLabeling[x] = 0 ;//Initially, all the labels for columns (Y) are at 0's.
         }
         for (int x = 0; x < originalG.get_m_WeightMatrix().length; x++) {
             for (int y = 0; y < originalG.get_m_WeightMatrix().length; y++) {

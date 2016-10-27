@@ -30,9 +30,10 @@ public class KuhnMunkres {
 
         mGlobalVariables = new GlobalVariables();
         int[][] m_matrix = {
-            {10, 20, 15},
-            {0,0,1},
-            {2, 25, 10}
+            {0, 0, 0, 0},
+             {0, 2, 30, 56},
+             {0,  10, 10, 7},
+             {0,  5, 6, 7}
         };
 
         mGlobalVariables.setOriginalG(new Matrix(m_matrix));
@@ -137,6 +138,17 @@ public class KuhnMunkres {
             }
 
         }
+        
+        System.out.println("no neighbors, so not possible, ending this X");
+        for(int s : mGlobalVariables.getM_i_S())
+        {
+            if(mGlobalVariables.getmActualMatching().get(s) == -1)
+                mGlobalVariables.getmActualMatching().set(s, -2);
+                       
+        }
+         mGlobalVariables.setGlobalPosition(1);
+       
+         return;
     }
 
     public void Is_X_Saturated_Feo() {
