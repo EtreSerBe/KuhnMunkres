@@ -30,10 +30,11 @@ public class KuhnMunkres {
 
         mGlobalVariables = new GlobalVariables();
         int[][] m_matrix = {
-            {0, 0, 0, 0},
-             {0, 2, 30, 56},
-             {0,  10, 10, 7},
-             {0,  5, 6, 7}
+            {1, 6, 4, 1, 5},
+            {3, 2, 6, 0, 0},
+            {8, 0, 7, 4, 4},
+            {1, 1, 1, 1, 1},
+            {9, 8, 5, 1, 1}
         };
 
         mGlobalVariables.setOriginalG(new Matrix(m_matrix));
